@@ -1,6 +1,6 @@
 **I am not a developer!** I'm simply mirroring the changes made by knah and hoping nothing breaks. If you have more experience with this than me (read: none) then feel free to submit a pull request, thank you.
 
-![gamer](https://github.com/physicalmemory/FavCat-Restored/blob/master/notgoodwithcomputer.jpg)
+![funny](https://github.com/physicalmemory/FavCat-Restored/blob/master/notgoodwithcomputer.jpeg)
 
 ## Original readme below.
 
