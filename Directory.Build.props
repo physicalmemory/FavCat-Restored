@@ -107,7 +107,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup Condition="'$(NoModReferences)' != 'true'">
-		<EmbeddedResource Include="$(MsBuildThisFileDirectory)/Common/NativePatchUtils.cs" Link="Common/NativePatchUtils.cs" />
         <EmbeddedResource Include="$(MsBuildThisFileDirectory)/Common/_dummy_.dll" Link="Common/_dummy_.dll" />
         <EmbeddedResource Include="$(MsBuildThisFileDirectory)/Common/_dummy2_.dll" Link="Common/_dummy2_.dll" />
 
@@ -115,6 +114,9 @@
                           OutputItemType="Analyzer"
                           ReferenceOutputAssembly="false" />
     </ItemGroup>
+	<ItemGroup Condition="'$(UsesNativePatches)' == 'true'">
+		<Compile Include="$(MsBuildThisFileDirectory)/Common/NativePatchUtils.cs" Link="Common/NativePatchUtils.cs" />
+	</ItemGroup>
     <ItemGroup Condition="'$(NoModReferences)' != 'true'">
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
             <SpecificVersion>false</SpecificVersion>
