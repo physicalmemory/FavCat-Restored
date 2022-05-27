@@ -1,4 +1,8 @@
-![gamer](https://github.com/FelkonEx/FavCat-Restored/blob/master/Untitled-2.jpg)
+**I am not a developer!** I'm simply mirroring the changes made by knah and hoping nothing breaks. If you have more experience with this than me (read: none) then feel free to submit a pull request, thank you.
+
+![gamer](https://github.com/physicalmemory/FavCat-Restored/blob/master/notgoodwithcomputer.jpg)
+
+## Original readme below.
 
 This repo's fork will contain changes to revert the decision of having VRC+ to use any of the favoriting within FavCat, forked from the [original VRCMods repo](https://github.com/knah/VRCMods).
 
