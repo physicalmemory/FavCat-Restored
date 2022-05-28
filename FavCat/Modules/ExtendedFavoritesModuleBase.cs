@@ -487,9 +487,9 @@ namespace FavCat.Modules
             var customList = listRoot.GetComponent<CustomPickerList>();
             if (customList) return customList.Category.CategoryName;
 
-            //var avatarList = listRoot.GetComponent<UiAvatarList>();
-            //if (avatarList && avatarList.field_Public_Category_0 == UiAvatarList.Category.PublicQuest) 
-            //    return null; // nobody likes this one
+            var avatarList = listRoot.GetComponent<UiAvatarList>();
+            if (avatarList && avatarList.field_Public_Category_0 == UiAvatarList.Category.PublicQuest) 
+                return null; // nobody likes this one
 
             return listRoot.transform.Find("Button/TitleText")?.GetComponent<Text>()?.text?.StripParenthesis() ?? listRoot.name;
         }

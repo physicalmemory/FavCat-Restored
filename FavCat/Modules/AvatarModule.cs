@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using FavCat.Adapters;
 using FavCat.CustomLists;
 using FavCat.Database.Stored;
 using MelonLoader;
 using UIExpansionKit.API;
+using UIExpansionKit.Components;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 using UnityEngine.UI;
@@ -56,11 +58,11 @@ namespace FavCat.Modules
 
         private static Transform GetListsParent()
         {
-            var foundAvatarPage = GameObject.Find("UserInterface/MenuContent/Screens/Avatar");
+            var foundAvatarPage = GameObject.Find("UserInterface/MenuContent/Screens/Avatar").GetComponent<PageAvatar>();
             if (foundAvatarPage == null)
                 throw new ApplicationException("No avatar page, can't initialize extended favorites");
 
-            var randomList = foundAvatarPage.GetComponentInChildren<UiAvatarList>(true);
+            var randomList = foundAvatarPage.GetComponentInChildren<UiAvatarList>();
             return randomList.transform.parent;
             
         }
