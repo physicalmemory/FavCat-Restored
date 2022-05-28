@@ -135,7 +135,7 @@ namespace FavCat.Modules
             };
 
             // hide custom lists if original search list is showing
-            var originalSearchList = GatherLists().FirstOrDefault(it => it.ListName.ToLower() == "search results" && !it.IsCustom);
+            var originalSearchList = GatherLists(false).FirstOrDefault(it => it.ListName.ToLower() == "search results" && !it.IsCustom);
             if (originalSearchList.ListTransform)
             {
                 var listener = originalSearchList.ListTransform.GetOrAddComponent<EnableDisableListener>();
@@ -243,7 +243,7 @@ namespace FavCat.Modules
             int lastSeenListIndex = -1;
 
             var knownLists = new Dictionary<String, (Transform ListTransform, string ListName, bool IsCustom)>();
-            foreach (var list in GatherLists())
+            foreach (var list in GatherLists(true))
             {
                 if (MelonDebug.IsEnabled() && knownLists.ContainsKey(list.ListName))
                     MelonDebug.Msg($"List {list.ListName} is duplicated");
@@ -494,23 +494,35 @@ namespace FavCat.Modules
             return listRoot.transform.Find("Button/TitleText")?.GetComponent<Text>()?.text?.StripParenthesis() ?? listRoot.name;
         }
 
-        private List<(Transform ListTransform, string ListName, bool IsCustom)> GatherLists()
+        private List<(Transform ListTransform, string ListName, bool IsCustom)> GatherLists(bool forOrdering)
         {
             var result = new List<(Transform, string, bool)>();
-            
-            foreach (var subListObj in listsParent)
-            {
+
+            GatherListsImpl(forOrdering, result, listsParent);
+
+            return result;
+        }
+
+        private void GatherListsImpl(bool forOrdering, List<(Transform, string, bool)> result, Transform parent)
+        {
+            foreach (var subListObj in parent)
+            { 
                 var subList = subListObj.Cast<Transform>();
-                
-                if (subList.gameObject.name == ExpandEnforcerGameObjectName)
+
+                var subListGoName = subList.gameObject.name;
+                if (subListGoName == ExpandEnforcerGameObjectName) continue;
+
+                if (!forOrdering && subListGoName == "FavoriteContent")
+                {
+                    GatherListsImpl(forOrdering, result, subList);
                     continue;
+                }
 
                 var listName = ExtractListName(subList.gameObject);
                 if (listName != null)
-                    result.Add((subList, listName, (bool) subList.GetComponent<CustomPickerList>()));
+                    result.Add((subList, listName, (bool)subList.GetComponent<CustomPickerList>()));
             }
 
-            return result;
         }
         
         private void UpdateSelectedListOrder(int position)
@@ -518,7 +530,7 @@ namespace FavCat.Modules
             myCurrentlySelectedList.transform.SetSiblingIndex2(position);
 
             var oldOrder = Favorites.GetStoredOrder();
-            Favorites.SetStoredOrder(GatherLists()
+            Favorites.SetStoredOrder(GatherLists(true)
                 .Select(it => new CategoryInfo {Name = it.ListName, IsExternal = !it.IsCustom}).ToList(), oldOrder.DefaultListsToHide);
             
             ExpansionKitApi.HideAllCustomPopups();
@@ -650,7 +662,7 @@ namespace FavCat.Modules
             var currentData = Favorites.GetStoredOrder();
             var currentHiddenLists = currentData.DefaultListsToHide.ToHashSet();
             
-            foreach (var gatherList in GatherLists())
+            foreach (var gatherList in GatherLists(false))
             {
                 if (gatherList.IsCustom)
                     continue;

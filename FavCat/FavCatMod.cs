@@ -136,13 +136,13 @@ namespace FavCat
     public class ApiSnifferPatch
     {
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate bool ApiPopulateDelegate(IntPtr @this, IntPtr dictionary, IntPtr someRef, IntPtr methodRef);
+        private delegate byte ApiPopulateDelegate(IntPtr @this, IntPtr dictionary, IntPtr someRef, IntPtr methodRef);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        private delegate void ImageDownloaderOnDoneDelegate(IntPtr thisPtr, IntPtr asyncOperationPtr);
+        private delegate void ImageDownloaderOnDoneDelegate(IntPtr thisPtr, IntPtr asyncOperationPtr, IntPtr methodInfo);
 
-        private static ApiPopulateDelegate ourOriginalApiPopulate = (@this, dictionary, @ref, @ref1) => false;
-        private static ImageDownloaderOnDoneDelegate ourOriginalOnDone = (ptr, operationPtr) => { };
+        private static ApiPopulateDelegate ourOriginalApiPopulate = (_, _, _, _) => 0;
+        private static ImageDownloaderOnDoneDelegate ourOriginalOnDone = (_, _, _) => { };
 
         private static readonly Type ImageDownloaderClosureType;
         private static readonly MethodInfo WebRequestField;
@@ -171,9 +171,9 @@ namespace FavCat
 
         private static readonly object[] EmptyObjectArray = new object[0];
 
-        public static void ImageSnifferPatch(IntPtr instancePtr, IntPtr asyncOperationPtr)
+        public static void ImageSnifferPatch(IntPtr instancePtr, IntPtr asyncOperationPtr, IntPtr methodInfo)
         {
-            ourOriginalOnDone(instancePtr, asyncOperationPtr);
+            ourOriginalOnDone(instancePtr, asyncOperationPtr, methodInfo);
 
             try
             {
@@ -202,7 +202,7 @@ namespace FavCat
             }
         }
 
-        public static bool ApiSnifferStatic(IntPtr @this, IntPtr dictionary, IntPtr someRef, IntPtr methodInfo)
+        public static byte ApiSnifferStatic(IntPtr @this, IntPtr dictionary, IntPtr someRef, IntPtr methodInfo)
         {
             var result = ourOriginalApiPopulate(@this, dictionary, someRef, methodInfo);
 
