@@ -1,3 +1,5 @@
+## **[Check this fork for someone who actually knows what they're doing.](https://github.com/yobson1/FavCat-Restored)** 
+
 **I am not a developer!** I'm simply mirroring the changes made by knah and hoping nothing breaks. If you have more experience with this than me (read: none) then feel free to submit a pull request, thank you.
 
 ![funny](https://github.com/physicalmemory/FavCat-Restored/blob/master/notgoodwithcomputer.jpeg)
